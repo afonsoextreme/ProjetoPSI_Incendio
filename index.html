@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatorio de Incendios</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        .graph { text-align: center; margin-bottom: 50px; }
+        img { border: 1px solid #ddd; border-radius: 4px; padding: 5px; width: 80%; }
+    </style>
+</head>
+<body>
 
+    <h1>Analise Mensal de Incendios Rurais</h1>
+
+    <div class="graph">
+        <h2>Numero de Incendios por Mes</h2>
+        <img src="{{ url_for('static', filename='1.png') }}" alt="Grafico 1">
+    </div>
+
+    <div class="graph">
+        <h2>Area Ardida (ha) por Mes</h2>
+        <img src="{{ url_for('static', filename='2.png') }}" alt="Grafico 2">
+    </div>
+
+    <div class="graph">
+        <h2>Proporcao de Incendios em Agosto vs Outros Meses</h2>
+        <img src="{{ url_for('static', filename='3.png') }}" alt="Grafico 3">
+    </div>
+
+    <div class="graph">
+        <h2>Grafico de Barras Empilhadas: Incendios e Area Ardida</h2>
+        <img src="{{ url_for('static', filename='4.png') }}" alt="Grafico 4">
+    </div>
+
+</body>
+</html>
