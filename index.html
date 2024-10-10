@@ -1,50 +1,115 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Incêndios</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        .graph { text-align: center; margin-bottom: 50px; }
+        img { border: 1px solid #ddd; border-radius: 4px; padding: 5px; width: 80%; }
+        #chart_div { width: 80%; height: 400px; margin: 0 auto; }
+    </style>
+
+    <!-- Carregar a API de visualização do Google Charts -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {packages: ['corechart', 'bar']});
-      google.charts.setOnLoadCallback(drawBasic);
+        // Carrega a API de visualização do Google Charts
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
+        google.charts.setOnLoadCallback(drawBasic);
+        google.charts.setOnLoadCallback(drawComboChart);
 
-      function drawBasic() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Year');
-        data.addColumn('number', 'Incêndios Rurais (nº)');
-        data.addColumn('number', 'Área Ardida Total (ha)');
+        // Gráfico 1: Número de Incêndios por Mês
+        function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Mês');
+            data.addColumn('number', 'Número de Incêndios');
 
-        data.addRows([
-          ['2014', 8679, 22310],
-          ['2015', 17369, 64529],
-          ['2016', 13148, 160838],
-          ['2017', 15642, 247263],
-          ['2018', 9316, 38477],
-          ['2019', 9636, 41090],
-          ['2020', 8398, 64719],
-          ['2021', 6858, 26338],
-          ['2022', 9746, 109214],
-          ['2023', 6897, 32911],
-          ['2024', 5424, 16897],
-        ]);
+            // Dados de incêndios por mês
+            data.addRows([
+                ['Janeiro', 200],
+                ['Fevereiro', 250],
+                ['Março', 300],
+                ['Abril', 450],
+                ['Maio', 500],
+                ['Junho', 600],
+                ['Julho', 800],
+                ['Agosto', 1671],
+                ['Setembro', 800]
+            ]);
 
-        var options = {
-          title: 'Incêndios Rurais e Área Ardida em Portugal (2014-2024)',
-          hAxis: {
-            title: 'Ano'
-          },
-          vAxis: {
-            title: 'Número de Incêndios e Área Ardida (ha)'
-          }
-        };
+            var options = {
+                title: 'Número de Incêndios por Mês',
+                hAxis: { title: 'Mês' },
+                vAxis: { title: 'Número de Incêndios', minValue: 0 },
+                colors: ['#FF69B4'],  // Cor rosa
+                legend: { position: 'none' }
+            };
 
-        var chart = new google.visualization.ColumnChart(
-          document.getElementById('chart_div')
-        );
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
+            chart.draw(data, options);
+        }
 
-        chart.draw(data, options);
-      }
+        // Gráfico 2: Total de Incêndios e Área Ardida em Portugal (2024)
+        function drawComboChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Ano', 'Número de Incêndios', 'Área Ardida (ha)'],
+                ['2024', 5000, 140000], // Exemplo de dados para 2024
+            ]);
+
+            var options = {
+                title: 'Total de Incêndios e Área Ardida em Portugal (2024)',
+                hAxis: { title: 'Ano' }, // Título para o eixo horizontal
+                vAxes: {
+                    0: { title: 'Número de Incêndios', textStyle: { color: 'red' } }, // Eixo primário
+                    1: { title: 'Área Ardida (hectares)', textStyle: { color: 'red' } } // Eixo secundário
+                },
+                seriesType: 'bars', // Gráfico padrão é de barras
+                series: {
+                    1: { type: 'line', targetAxisIndex: 1 } // Área Ardida em linha
+                },
+                colors: ['#B22222', '#FF6347'], // Cores para Número de Incêndios e Área Ardida
+            };
+
+            var chart = new google.visualization.ComboChart(document.getElementById('chart_div2'));
+            chart.draw(data, options);
+        }
     </script>
-  </head>
-  <body>
-    <div id="chart_div" style="width: 800px; height: 600px;"></div>
-  </body>
+</head>
+<body>
+
+    <h1>Análise Mensal de Incêndios Rurais</h1>
+
+    <!-- Gráfico 1: Número de Incêndios por Mês -->
+    <div class="graph">
+        <h2>Número de Incêndios por Mês</h2>
+        <div id="chart_div1"></div> <!-- Gráfico de Barras será exibido aqui -->
+    </div>
+
+    <!-- Gráfico 2: Total de Incêndios e Área Ardida em Portugal (2024) -->
+    <div class="graph">
+        <h2>Total de Incêndios e Área Ardida (2024)</h2>
+        <div id="chart_div2"></div> <!-- Gráfico Combo será exibido aqui -->
+    </div>
+
+    <!-- Imagem do gráfico de Área Ardida por Mês -->
+    <div class="graph">
+        <h2>Área Ardida (ha) por Mês</h2>
+        <img src="{{ url_for('static', filename='2.png') }}" alt="Gráfico de Área Ardida por Mês">
+    </div>
+
+    <!-- Imagem do gráfico de Proporção de Incêndios em Agosto vs Outros Meses -->
+    <div class="graph">
+        <h2>Proporção de Incêndios em Agosto vs Outros Meses</h2>
+        <img src="{{ url_for('static', filename='3.png') }}" alt="Gráfico de Proporção de Incêndios">
+    </div>
+
+    <!-- Imagem do gráfico de Barras Empilhadas: Incêndios e Área Ardida -->
+    <div class="graph">
+        <h2>Gráfico de Barras Empilhadas: Incêndios e Área Ardida</h2>
+        <img src="{{ url_for('static', filename='4.png') }}" alt="Gráfico de Barras Empilhadas">
+    </div>
+
+</body>
 </html>
