@@ -19,6 +19,7 @@
         google.charts.load('current', { packages: ['corechart', 'bar'] });
         google.charts.setOnLoadCallback(drawBasic);
         google.charts.setOnLoadCallback(drawComboChart);
+        google.charts.setOnLoadCallback(drawAnnualChart);
 
         // Gráfico 1: Número de Incêndios por Mês
         function drawBasic() {
@@ -75,6 +76,40 @@
             var chart = new google.visualization.ComboChart(document.getElementById('chart_div2'));
             chart.draw(data, options);
         }
+
+        // Gráfico 3: Incêndios Rurais e Área Ardida em Portugal (2014-2024)
+        function drawAnnualChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Year');
+          data.addColumn('number', 'Incêndios Rurais (nº)');
+          data.addColumn('number', 'Área Ardida Total (ha)');
+
+          data.addRows([
+            ['2014', 8679, 22310],
+            ['2015', 17369, 64529],
+            ['2016', 13148, 160838],
+            ['2017', 15642, 247263],
+            ['2018', 9316, 38477],
+            ['2019', 9636, 41090],
+            ['2020', 8398, 64719],
+            ['2021', 6858, 26338],
+            ['2022', 9746, 109214],
+            ['2023', 6897, 32911],
+            ['2024', 5424, 16897],
+          ]);
+
+          var options = {
+            title: 'Incêndios Rurais e Área Ardida em Portugal (2014-2024)',
+            hAxis: { title: 'Ano' },
+            vAxis: { title: 'Número de Incêndios e Área Ardida (ha)' }
+          };
+
+          var chart = new google.visualization.ColumnChart(
+            document.getElementById('chart_div3')
+          );
+
+          chart.draw(data, options);
+        }
     </script>
 </head>
 <body>
@@ -91,6 +126,12 @@
     <div class="graph">
         <h2>Total de Incêndios e Área Ardida (2024)</h2>
         <div id="chart_div2"></div> <!-- Gráfico Combo será exibido aqui -->
+    </div>
+
+    <!-- Gráfico 3: Incêndios Rurais e Área Ardida em Portugal (2014-2024) -->
+    <div class="graph">
+        <h2>Incêndios Rurais e Área Ardida em Portugal (2014-2024)</h2>
+        <div id="chart_div3"></div> <!-- Gráfico Anual será exibido aqui -->
     </div>
 
     <!-- Imagem do gráfico de Área Ardida por Mês -->
