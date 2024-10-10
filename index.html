@@ -10,6 +10,7 @@
         .graph { text-align: center; margin-bottom: 50px; }
         img { border: 1px solid #ddd; border-radius: 4px; padding: 5px; width: 80%; }
         #chart_div { width: 80%; height: 400px; margin: 0 auto; }
+        #piechart { width: 900px; height: 600px; margin: 0 auto; } /* Tamanho do gráfico de pizza aumentado */
     </style>
 
     <!-- Carregar a API de visualização do Google Charts -->
@@ -20,6 +21,7 @@
         google.charts.setOnLoadCallback(drawBasic);
         google.charts.setOnLoadCallback(drawComboChart);
         google.charts.setOnLoadCallback(drawAnnualChart);
+        google.charts.setOnLoadCallback(drawPieChart);
 
         // Gráfico 1: Número de Incêndios por Mês
         function drawBasic() {
@@ -27,7 +29,6 @@
             data.addColumn('string', 'Mês');
             data.addColumn('number', 'Número de Incêndios');
 
-            // Dados de incêndios por mês
             data.addRows([
                 ['Janeiro', 200],
                 ['Fevereiro', 250],
@@ -61,16 +62,16 @@
 
             var options = {
                 title: 'Total de Incêndios e Área Ardida em Portugal (2024)',
-                hAxis: { title: 'Ano' }, // Título para o eixo horizontal
+                hAxis: { title: 'Ano' },
                 vAxes: {
-                    0: { title: 'Número de Incêndios', textStyle: { color: 'red' } }, // Eixo primário
-                    1: { title: 'Área Ardida (hectares)', textStyle: { color: 'red' } } // Eixo secundário
+                    0: { title: 'Número de Incêndios', textStyle: { color: 'red' } },
+                    1: { title: 'Área Ardida (hectares)', textStyle: { color: 'red' } }
                 },
-                seriesType: 'bars', // Gráfico padrão é de barras
+                seriesType: 'bars',
                 series: {
                     1: { type: 'line', targetAxisIndex: 1 } // Área Ardida em linha
                 },
-                colors: ['#B22222', '#FF6347'], // Cores para Número de Incêndios e Área Ardida
+                colors: ['#B22222', '#FF6347'],
             };
 
             var chart = new google.visualization.ComboChart(document.getElementById('chart_div2'));
@@ -110,6 +111,25 @@
 
           chart.draw(data, options);
         }
+
+        // Gráfico 4: Proporção de Incêndios em Agosto vs Outros Meses (Gráfico de Pizza)
+        function drawPieChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Mês', 'Proporção'],
+              ['Agosto', 30],
+              ['Outros Meses', 70]
+            ]);
+
+            var options = {
+              title: 'Proporção de Incêndios em Agosto vs Outros Meses',
+              colors: ['#FFA500', '#ADD8E6'],  // Cores laranja e azul claro
+              pieSliceText: 'percentage',
+              legend: { position: 'top', alignment: 'end' }
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
     </script>
 </head>
 <body>
@@ -134,16 +154,16 @@
         <div id="chart_div3"></div> <!-- Gráfico Anual será exibido aqui -->
     </div>
 
+    <!-- Gráfico 4: Proporção de Incêndios em Agosto vs Outros Meses -->
+    <div class="graph">
+        <h2>Proporção de Incêndios em Agosto vs Outros Meses</h2>
+        <div id="piechart" style="width: 900px; height: 600px;"></div> <!-- Gráfico de Pizza será exibido aqui -->
+    </div>
+
     <!-- Imagem do gráfico de Área Ardida por Mês -->
     <div class="graph">
         <h2>Área Ardida (ha) por Mês</h2>
         <img src="{{ url_for('static', filename='2.png') }}" alt="Gráfico de Área Ardida por Mês">
-    </div>
-
-    <!-- Imagem do gráfico de Proporção de Incêndios em Agosto vs Outros Meses -->
-    <div class="graph">
-        <h2>Proporção de Incêndios em Agosto vs Outros Meses</h2>
-        <img src="{{ url_for('static', filename='3.png') }}" alt="Gráfico de Proporção de Incêndios">
     </div>
 
     <!-- Imagem do gráfico de Barras Empilhadas: Incêndios e Área Ardida -->
